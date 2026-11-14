@@ -1,0 +1,29 @@
+name: Validate NovaWin source archive
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  powershell-parser:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract source archive
+        shell: pwsh
+        run: Expand-Archive -LiteralPath 'NovaWin10Lite_1.0.0_Source.zip' -DestinationPath "$env:RUNNER_TEMP\NovaWin" -Force
+      - name: Parse PowerShell scripts
+        shell: pwsh
+        run: |
+          $root = Join-Path $env:RUNNER_TEMP 'NovaWin'
+          foreach ($name in @('Build-NovaWinISO.ps1', 'FirstLogon.ps1')) {
+            $path = Join-Path $root $name
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error ("{0}: {1}" -f $path, $_.Message) }
+              throw "PowerShell syntax errors in $name."
+            }
+            Write-Host "OK: $name"
+          }

@@ -1,38 +1,18 @@
-# NovaCraft Launcher
+# NovaWin 10 Lite
 
-NovaCraft is a planned Windows launcher for Minecraft: Java Edition, with a dark gaming interface and blue-crystal **N** branding.
+Сборщик загрузочного ISO Windows 10 x64 для Intel Core i7-9750H, NVIDIA GTX 1650 и 16 GB RAM.
 
-> **Project status: planning / implementation in progress.** This repository currently contains project documentation only. It does not yet contain a working launcher, installer, or release ZIP.
+**Проект и исходники:** [NovaWin10Lite_1.0.0_Source.zip](NovaWin10Lite_1.0.0_Source.zip)
 
-## Planned experience
+Архив содержит PowerShell-скрипт сборки bootable ISO (BIOS + UEFI), сценарии первого запуска Windows, автоматическую установку Firefox, Steam, Telegram Desktop и WinRAR через WinGet, загрузку/запуск Sota VPN и безопасные игровые настройки.
 
-- Minecraft-style home dashboard with version selection and a prominent Play action
-- Installations and profile management
-- Local guest profiles (launcher identity only; not Minecraft authentication)
-- Microsoft account authentication through supported official flows
-- Mods and modpacks discovery through the official Modrinth API
-- Fabric, Forge, and NeoForge compatibility filtering
-- Performance center for RAM and Java configuration
-- Java installation assistance
-- Skin Studio for importing, previewing, and exporting valid Java skin PNGs
-- Theme store, crash log viewer, gaming statistics, and update center
-- YouTube page that opens the official YouTube website, with a browser fallback
-- NovaCraft loading screen and blue-crystal N branding
+## Важно
 
-## Minecraft and authentication
+- Это набор для локальной сборки, а не готовый ISO: оригинальный Windows 10 ISO нужно скачать у Microsoft.
+- Для сборки нужен Windows ADK с компонентом Deployment Tools (`oscdimg.exe`).
+- ISO создаётся локально. В репозитории не распространяются установочные файлы Windows.
+- Windows Defender, Windows Update, Firewall, драйверы и системные компоненты не отключаются.
+- Edge остаётся системным компонентом; после установки Firefox нужно выбрать его браузером по умолчанию в настройках Windows.
+- Установщик Sota VPN открывается обычным мастером, так как тихий ключ запуска не подтверждён.
 
-NovaCraft is intended to launch Minecraft: Java Edition through **Legacy Launcher** where supported. The launcher must clearly disclose any external dependency and must not bundle or redistribute Legacy Launcher or Minecraft unless their licences and distribution terms permit it.
-
-Local guest profiles are only local launcher profiles. They do not authenticate with Microsoft, grant ownership of Minecraft, or provide access to online-mode servers. Authentication must use supported official flows. This project will not distribute cracked game files or bypass authentication.
-
-## Development status
-
-Features listed above are planned requirements, not claims that they are already implemented. A release will be published only after the application is built and tested.
-
-## Contributing
-
-Issues and pull requests are welcome. Please describe reproducible bugs, expected behaviour, and your environment.
-
-## License
-
-No project license has been selected yet. Until a license is added, the source (when published) is not granted an open-source license by this repository.
+См. подробную инструкцию внутри ZIP в файле `README.md`.
