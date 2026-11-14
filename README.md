@@ -1,18 +1,29 @@
 # NovaWin 10 Lite
 
-Сборщик загрузочного ISO Windows 10 x64 для Intel Core i7-9750H, NVIDIA GTX 1650 и 16 GB RAM.
+**Version: 1.0.2**  
+Target machine: Intel Core i7-9750H · NVIDIA GTX 1650 · 16 GB RAM · Windows x64.
 
-**Проект и исходники:** [NovaWin10Lite_1.0.0_Source.zip](NovaWin10Lite_1.0.0_Source.zip)
+This branch contains the NovaWin 10 Lite ISO builder. It creates installation media locally from an original Microsoft Windows 10 ISO; Windows installation files are not redistributed here.
 
-Архив содержит PowerShell-скрипт сборки bootable ISO (BIOS + UEFI), сценарии первого запуска Windows, автоматическую установку Firefox, Steam, Telegram Desktop и WinRAR через WinGet, загрузку/запуск Sota VPN и безопасные игровые настройки.
+## Download
 
-## Важно
+[**NovaWin10Lite_1.0.2_Source.zip**](./NovaWin10Lite_1.0.2_Source.zip)
 
-- Это набор для локальной сборки, а не готовый ISO: оригинальный Windows 10 ISO нужно скачать у Microsoft.
-- Для сборки нужен Windows ADK с компонентом Deployment Tools (`oscdimg.exe`).
-- ISO создаётся локально. В репозитории не распространяются установочные файлы Windows.
-- Windows Defender, Windows Update, Firewall, драйверы и системные компоненты не отключаются.
-- Edge остаётся системным компонентом; после установки Firefox нужно выбрать его браузером по умолчанию в настройках Windows.
-- Установщик Sota VPN открывается обычным мастером, так как тихий ключ запуска не подтверждён.
+The 1.0.2 release fixes Windows PowerShell 5.1 parsing by saving the ISO builder as UTF-8 with BOM and using ASCII-only diagnostic strings. It also keeps the OEM setup scripts in the installation media root so Windows Setup can copy them into `C:\Windows\Setup\Scripts`.
 
-См. подробную инструкцию внутри ZIP в файле `README.md`.
+## Build requirements
+
+- Original Microsoft Windows 10 22H2 x64 ISO
+- Windows ADK with **Deployment Tools** (`oscdimg.exe`)
+- Administrator PowerShell
+- At least 25 GB free disk space recommended
+
+Run `Start-Build.cmd` as administrator, then enter the path to the Microsoft ISO. Output: `NovaWin10Lite_x64.iso`.
+
+## First-logon setup
+
+After Windows is installed and the first local administrator signs in, the package attempts to install Firefox, Steam, Telegram Desktop and WinRAR using WinGet, then downloads and visibly launches the Sota VPN installer. Firefox must be selected manually as the default browser in Windows Settings. Defender, Windows Update and Firewall are retained.
+
+This is not a fully unattended Windows deployment: disk selection, account creation and activation remain part of Windows Setup. Test the ISO in a virtual machine before using it on real hardware.
+
+Windows 10 standard support ended on 14 October 2025. Check Microsoft's ESU availability and eligibility for your device and region.

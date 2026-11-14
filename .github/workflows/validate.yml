@@ -1,4 +1,4 @@
-name: Validate NovaWin source archive
+name: Validate NovaWin 10 Lite source
 
 on:
   push:
@@ -11,11 +11,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Extract source archive
         shell: pwsh
-        run: Expand-Archive -LiteralPath 'NovaWin10Lite_1.0.0_Source.zip' -DestinationPath "$env:RUNNER_TEMP\NovaWin" -Force
-      - name: Parse PowerShell scripts
+        run: Expand-Archive -LiteralPath 'NovaWin10Lite_1.0.2_Source.zip' -DestinationPath "$env:RUNNER_TEMP\NovaWin" -Force
+      - name: Verify encoding and parse PowerShell
         shell: pwsh
         run: |
           $root = Join-Path $env:RUNNER_TEMP 'NovaWin'
+          $bytes = [IO.File]::ReadAllBytes((Join-Path $root 'Build-NovaWinISO.ps1'))
+          if ($bytes.Length -lt 3 -or $bytes[0] -ne 0xEF -or $bytes[1] -ne 0xBB -or $bytes[2] -ne 0xBF) {
+            throw 'Build-NovaWinISO.ps1 must be UTF-8 with BOM for Windows PowerShell 5.1.'
+          }
           foreach ($name in @('Build-NovaWinISO.ps1', 'FirstLogon.ps1')) {
             $path = Join-Path $root $name
             $tokens = $null
